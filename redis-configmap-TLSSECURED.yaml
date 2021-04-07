@@ -181,7 +181,7 @@ data:
     # By default, the Redis Cluster bus uses a plain TCP connection. To enable
     # TLS for the bus protocol, use the following directive:
     #
-     tls-cluster yes
+    # tls-cluster yes
 
     # Explicitly specify TLS versions to support. Allowed values are case insensitive
     # and include "TLSv1", "TLSv1.1", "TLSv1.2", "TLSv1.3" (OpenSSL >= 1.1.1) or
