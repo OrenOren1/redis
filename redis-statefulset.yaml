@@ -12,29 +12,8 @@ spec:
     metadata:
       labels:
         app: redis
+        name: "redis-6"
     spec:
-      initContainers:
-      - name: config
-        image: redis:6.0-alpine
-        command: [ "sh", "-c" ]
-        args:
-          - |
-            cp /tmp/redis/redis.conf /etc/redis/redis.conf
-
-          
-
-              if [ "$(hostname)" == "redis-0" ]; then
-                echo "this is redis-0, not updating config..."
-              else
-                echo "updating redis.conf..."
-                echo "slaveof $MASTER_FDQN 6379" >> /etc/redis/redis.conf
-              
-            
-        volumeMounts:
-        - name: redis-config
-          mountPath: /etc/redis/
-        - name: config
-          mountPath: /tmp/redis/
       containers:
       - name: redis
         image: redis:6.0-alpine
@@ -49,11 +28,12 @@ spec:
         - name: redis-config
           mountPath: /etc/redis/
       volumes:
-      - name: redis-config
-        emptyDir: {}
-      - name: config
-        configMap:
-          name: redis-config
+        - name: redis-config
+          configMap:
+            name: redis-config
+            items:
+              - key: redis.conf
+                path: redis.conf
   volumeClaimTemplates:
   - metadata:
       name: data
